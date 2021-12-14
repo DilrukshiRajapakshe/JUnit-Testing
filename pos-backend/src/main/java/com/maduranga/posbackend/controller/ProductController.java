@@ -3,34 +3,48 @@ package com.maduranga.posbackend.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.maduranga.posbackend.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.maduranga.posbackend.model.Product;
 import com.maduranga.posbackend.service.ProductService;
 
 @CrossOrigin()
 @RestController
+@RequestMapping("v1/product")
 public class ProductController {
 
 	@Autowired
 	ProductService productService;
-	
-	@RequestMapping("/products")
-	public List<Product> getAllproducts() {
-		return productService.getAllProducts();
+
+	@GetMapping("/all")
+	public ResponseEntity<List<Product>> getAllProduct(){
+		return productService.getAllProduct();
 	}
 
-	@RequestMapping("/category/{id}/products")
-	public List<Product> getAllproductsbyCategory(@PathVariable String id) {
-		return productService.getAllProductsByCategory(id);
+	@GetMapping("/{pid}")
+	public ResponseEntity<Product> findProduct(@PathVariable String pid){
+		return productService.getProductByid(pid);
 	}
 
-	@RequestMapping("/products/{id}")
-	public Optional<Product> getProduct(@PathVariable String id) {
-		return productService.getProductByid(id);
+	@PostMapping("/save")
+	public ResponseEntity<Product> saveProduct(@RequestBody Product product){
+		return productService.insertProduct(product);
+	}
+
+	@DeleteMapping("/{pid}")
+	public ResponseEntity<Product> deleteProduct(@PathVariable String pid){
+		return productService.deleteProduct(pid);
+	}
+
+	@PutMapping("/{pid}")
+	public ResponseEntity<Product> updateProduct(@PathVariable String pid, @RequestBody Product product){
+		return productService.updateProduct(pid,product);
+	}
+	@RequestMapping("/hello")
+	public String hello() {
+		return "Dilrukshi";
 	}
 }
