@@ -45,6 +45,6 @@ public class ProductController {
 	}
 	@RequestMapping("/hello")
 	public String hello() {
-		return "Dilrukshi";
+		return "hello";
 	}
 }
