@@ -1,16 +1,11 @@
 package com.maduranga.posbackend.controller;
 
 import java.util.List;
-import java.util.Optional;
-
-import com.google.gson.Gson;
-import com.maduranga.posbackend.model.Category;
 import com.maduranga.posbackend.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.maduranga.posbackend.model.Product;
 import com.maduranga.posbackend.service.ProductService;
 
 @CrossOrigin()
@@ -47,17 +42,6 @@ public class ProductController {
 	}
 	@RequestMapping("/hello")
 	public String hello() {
-//		Product p = new Product();
-//		p.setPid("m0011");
-//		p.setPname("SamS Chicken Sausage 200G");
-//		p.setPdesc("Sausages");
-//		p.setPprice(500.00);
-//		p.setPimgurl("https://objectstorage.ap-mumbai-1.oraclecloud.com/n/softlogicbicloud/b/cdn/o/products/600-600/118606--01--1613335103.jpeg");
-//		p.setCategory(new Category("M1", "Meet Products"));
-//
-//		String jsonString = new Gson().toJson((p));
-//		System.out.println(jsonString);
-//		System.out.println(jsonContext.read());
 		return "Dilrukshi";
 	}
 }
