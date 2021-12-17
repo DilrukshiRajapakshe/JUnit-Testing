@@ -1,141 +1,117 @@
+//package com.maduranga.posbackend.controller;
+//
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.maduranga.posbackend.dao.ProductRepo;
+//import com.maduranga.posbackend.model.Product;
+//import com.maduranga.posbackend.service.ProductService;
+//import org.hamcrest.Matchers;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.extension.ExtendWith;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
+//import org.mockito.junit.jupiter.MockitoExtension;
+//import org.springframework.boot.test.json.JacksonTester;
+//import org.springframework.http.MediaType;
+//import org.springframework.test.web.servlet.MockMvc;
+//import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+//import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+//
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//import static org.hamcrest.Matchers.hasSize;
+//import static org.mockito.BDDMockito.given;
+//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+//
+//@ExtendWith(MockitoExtension.class)
+//public class ProductControllerTests {
+//
+//    private MockMvc mvc;
+//
+//    @Mock
+//    private ProductRepo productRepo;
+//
+//    @Mock
+//    private ProductService productService;
+//
+//    @InjectMocks
+//    private ProductController productController;
+//
+//    private JacksonTester<Product> jsonSuperHero;
+//
+//    @BeforeEach
+//    public void setup() {
+//        JacksonTester.initFields(this, new ObjectMapper());
+//        mvc = MockMvcBuilders.standaloneSetup(productController)
+//                .build();
+//    }
+//
+//    @Test
+//    public void getALL() throws Exception {
+//
+//        List<Product> list = new ArrayList<>();
+//
+//        list.add(new Product("_01","Cake","Eat", 500));
+//        list.add(new Product("_02","Milk","Drink", 65));
+//        list.add(new Product("_03","Pen","Written", 20));
+//
+//        given(productRepo.findAll()).willReturn(list);
+//        System.out.println();
+//        mvc.perform(
+//                        get("/product/all")
+//                                .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().is(200))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$[0].pname", Matchers.is("Cake")));
+//
+//    }
+//
+//}
 package com.maduranga.posbackend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.maduranga.posbackend.dao.ProductRepo;
 import com.maduranga.posbackend.model.Product;
+import com.maduranga.posbackend.service.CategoryService;
 import com.maduranga.posbackend.service.ProductService;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.json.JacksonTester;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
-public class ProductControllerTests {
+@RunWith(SpringRunner.class)
+@WebMvcTest(ProductController.class)
+public class ProductControllerTests{
 
-    private MockMvc mvc;
+    @Autowired
+    MockMvc mockMvc;
 
-    @Mock
-    private ProductRepo productRepo;
+    @MockBean
+    ProductService productService;
 
-    @Mock
-    private ProductService productService;
-
-    @InjectMocks
-    private ProductController productController;
-
-    private JacksonTester<Product> jsonSuperHero;
-
-    @BeforeEach
-    public void setup() {
-        JacksonTester.initFields(this, new ObjectMapper());
-        mvc = MockMvcBuilders.standaloneSetup(productController)
-                .build();
-    }
+    @MockBean
+    CategoryService categoryService;
 
     @Test
-    public void getALL() throws Exception {
-        String jsonString = "[\n" +
-                "    {\n" +
-                "        \"pid\": \"d001\",\n" +
-                "        \"pname\": \"Milo Drink\",\n" +
-                "        \"pdesc\": \"Milo\",\n" +
-                "        \"pprice\": 65.0,\n" +
-                "        \"pimgurl\": \"https://globalfoodcity.com/wp-content/uploads/2018/02/02-500x500.jpg\",\n" +
-                "        \"category\": {\n" +
-                "            \"cid\": \"D1\",\n" +
-                "            \"cname\": \"Dairy Products\"\n" +
-                "        }\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"pid\": \"d002\",\n" +
-                "        \"pname\": \"Anchor Drink\",\n" +
-                "        \"pdesc\": \"Anchor\",\n" +
-                "        \"pprice\": 60.0,\n" +
-                "        \"pimgurl\": \"https://cdn.shopify.com/s/files/1/0020/9692/2735/products/anchor-newdale-uht-vanilla-milk-180ml-by-maharajasuper-com-684_300x300.png?v=1603360888\",\n" +
-                "        \"category\": {\n" +
-                "            \"cid\": \"D1\",\n" +
-                "            \"cname\": \"Dairy Products\"\n" +
-                "        }\n" +
-                "    }\n" +
-                "]";
+    public void testUpdateProductByID() throws Exception {
 
-        mvc.perform(MockMvcRequestBuilders.
-                        get("/v1/product/all")
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(new Product("d001","Milo", "Milo Drink",50));
+        mockMvc.perform(MockMvcRequestBuilders.put("/product/{pid}","d001")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("[\n" +
-                                "    {\n" +
-                                "        \"pid\": \"d001\",\n" +
-                                "        \"pname\": \"Milo Drink\",\n" +
-                                "        \"pdesc\": \"Milo\",\n" +
-                                "        \"pprice\": 65.0,\n" +
-                                "        \"pimgurl\": \"https://globalfoodcity.com/wp-content/uploads/2018/02/02-500x500.jpg\",\n" +
-                                "        \"category\": {\n" +
-                                "            \"cid\": \"D1\",\n" +
-                                "            \"cname\": \"Dairy Products\"\n" +
-                                "        }\n" +
-                                "    },\n" +
-                                "    {\n" +
-                                "        \"pid\": \"d002\",\n" +
-                                "        \"pname\": \"Anchor Drink\",\n" +
-                                "        \"pdesc\": \"Anchor\",\n" +
-                                "        \"pprice\": 60.0,\n" +
-                                "        \"pimgurl\": \"https://cdn.shopify.com/s/files/1/0020/9692/2735/products/anchor-newdale-uht-vanilla-milk-180ml-by-maharajasuper-com-684_300x300.png?v=1603360888\",\n" +
-                                "        \"category\": {\n" +
-                                "            \"cid\": \"D1\",\n" +
-                                "            \"cname\": \"Dairy Products\"\n" +
-                                "        }\n" +
-                                "    }\n" +
-                                "]"))
+                        .content(json)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].pname", Matchers.is("Milo Drink")));
-
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
     }
 
 }
-//package com.maduranga.posbackend.controller;
-
-//import com.maduranga.posbackend.service.ProductService;
-//import org.hamcrest.Matchers;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-//import org.springframework.boot.test.mock.mockito.MockBean;
-//import org.springframework.http.MediaType;
-//import org.springframework.test.context.junit4.SpringRunner;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-//import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-//
-//@RunWith(SpringRunner.class)
-//@WebMvcTest(ProductController.class)
-//public class ProductControllerTests{
-//
-//    @Autowired
-//    MockMvc mockMvc;
-//
-//    @MockBean
-//    ProductService productService;
-//
-//    @Test
-//    public void testGetProduct() throws Exception {
-//        mockMvc.perform(MockMvcRequestBuilders.get("/v1/product/d001")
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.pdesc", Matchers.is("Milo")))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.pname", Matchers.is("Milo Drink")));
-//    }
-//}

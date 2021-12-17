@@ -8,35 +8,34 @@ import org.springframework.web.bind.annotation.*;
 
 import com.maduranga.posbackend.service.ProductService;
 
-@CrossOrigin()
 @RestController
-@RequestMapping("v1/product")
+@RequestMapping("/product")
 public class ProductController {
 
 	@Autowired
 	ProductService productService;
 
-	@GetMapping("/all")
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public ResponseEntity<List<Product>> getAllProduct(){
 		return productService.getAllProduct();
 	}
 
-	@GetMapping("/{pid}")
+	@RequestMapping(value = "/{pid}", method = RequestMethod.GET)
 	public ResponseEntity<Product> findProduct(@PathVariable String pid){
 		return productService.getProductByid(pid);
 	}
 
-	@PostMapping("/save")
+	@RequestMapping(value ="/save", method = RequestMethod.POST)
 	public ResponseEntity<Product> saveProduct(@RequestBody Product product){
 		return productService.insertProduct(product);
 	}
 
-	@DeleteMapping("/{pid}")
+	@RequestMapping(value = "/{pid}", method = RequestMethod.DELETE)
 	public ResponseEntity<Product> deleteProduct(@PathVariable String pid){
 		return productService.deleteProduct(pid);
 	}
 
-	@PutMapping("/{pid}")
+	@RequestMapping(value ="/{pid}", method = RequestMethod.PUT )
 	public ResponseEntity<Product> updateProduct(@PathVariable String pid, @RequestBody Product product){
 		return productService.updateProduct(pid,product);
 	}

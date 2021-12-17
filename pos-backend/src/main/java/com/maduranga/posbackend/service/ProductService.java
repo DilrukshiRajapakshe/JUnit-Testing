@@ -54,8 +54,8 @@ public class ProductService {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	public ResponseEntity<Product> getProductByid(String cid) {
-		Optional<Product> categories = productRepo.findById(cid);
+	public ResponseEntity<Product> getProductByid(String pid) {
+		Optional<Product> categories = productRepo.findById(pid);
 		if (categories.isPresent()) {
 			return new ResponseEntity<>(categories.get(), HttpStatus.OK);
 		} else {

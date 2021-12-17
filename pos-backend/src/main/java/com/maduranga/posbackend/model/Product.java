@@ -12,23 +12,17 @@ public class Product {
 	private String pname;
 	private String pdesc;
 	private double pprice;
-	private String pimgurl;
-
-	@ManyToOne
-	private Category category;
 
 	public Product() {
 
 	}
 
-	public Product(String pid, String pname, String pdesc, double pprice, String pimgurl) {
+	public Product(String pid, String pname, String pdesc, double pprice) {
 		super();
 		this.pid = pid;
 		this.pname = pname;
 		this.pdesc = pdesc;
 		this.pprice = pprice;
-		this.pimgurl = pimgurl;
-		
 	}
 
 	public String getPid() {
@@ -63,20 +57,5 @@ public class Product {
 		this.pprice = pprice;
 	}
 
-	public String getPimgurl() {
-		return pimgurl;
-	}
-
-	public void setPimgurl(String pimgurl) {
-		this.pimgurl = pimgurl;
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
 
 }

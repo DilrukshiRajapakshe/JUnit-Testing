@@ -10,6 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ProductRepo extends CrudRepository<Product, String>{
 
-	public List<Product> findByCategoryCid(String cid);
+	public List<Product> findByCategoryCid(String pid);
 	
 }

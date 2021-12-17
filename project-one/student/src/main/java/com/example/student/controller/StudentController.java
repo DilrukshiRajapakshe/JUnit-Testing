@@ -3,6 +3,7 @@ package com.example.student.controller;
 import com.example.student.model.Student;
 import com.example.student.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
@@ -18,14 +19,24 @@ public class StudentController {
         this.studentRepository = studentRepository;
     }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+//    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @ResponseBody
     public List<Student> getAllRecords() {
         return (studentRepository.findAll());
     }
 
+//    @RequestMapping(value = "/search/{studentId}", method = RequestMethod.GET)
     @RequestMapping(value = "/{studentId}", method = RequestMethod.GET)
-    public Student getStudentById(@PathVariable(value="studentId") int studentId) {
-        return studentRepository.findById(studentId).get();
+    @ResponseBody
+    public Object getStudentById(@PathVariable(value="studentId") int studentId) {
+        try {
+            Object b = studentRepository.findById(studentId).get();
+            return ResponseEntity.ok().body("b");
+        } catch (Exception e) {
+            return "e";
+        }
+
     }
 
     @PostMapping
@@ -34,7 +45,7 @@ public class StudentController {
         return studentRepository.save(student);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{studentId}", method = RequestMethod.PUT)
     public Student updatePatientRecord(@RequestBody Student student) throws Exception {
         if (student == null || student.getStudentId() == 0) {
             throw new Exception();
@@ -52,12 +63,19 @@ public class StudentController {
         return studentRepository.save(existingStudentRecord);
     }
 
+//    @RequestMapping(value = "/delete/{studentId}", method = RequestMethod.DELETE)
     @RequestMapping(value = "/{studentId}", method = RequestMethod.DELETE)
-    public void deletePatientById(@PathVariable(value = "studentId") int studentId) throws Exception {
+    @ResponseBody
+    public Object deletePatientById(@PathVariable(value = "studentId") int studentId) throws Exception {
         if (studentRepository.findById(studentId).isEmpty()) {
             throw new Exception();
         }
-        studentRepository.deleteById(studentId);
+        try {
+            studentRepository.deleteById(studentId);
+            return ResponseEntity.ok();
+        } catch (Exception e) {
+            return "e";
+        }
     }
 
 }
